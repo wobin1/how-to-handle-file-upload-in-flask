@@ -1,25 +1,26 @@
-from flask import Flask, render_template
+from flask import Flask
+from flask import render_template
 from flask_wtf import FlaskForm
 from wtforms import FileField
-from flask_uploads import configure_uploads, IMAGES, UploadSet
+from flask_uploads import configure_uploads, ALL, UploadSet
 
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'thisisasecret'
-app.config['UPLOADED_IMAGES_DEST'] = 'uploads/images'
+app.config['UPLOADED_ALL_DEST'] = 'static/uploaded_files'
 
-images = UploadSet('images', IMAGES)
-configure_uploads(app, images)
+all = UploadSet('all', ALL)
+configure_uploads(app, all)
 
 
 class MyForm(FlaskForm):
-    image = FileField('image')
+    all = FileField('all')
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     form = MyForm()
     if form.validate_on_submit():
-        filename = images.save(form.image.data)
+        filename = all.save(form.all.data)
         return f'Filename: {filename}'
     return render_template('index.html', form = form)
 
