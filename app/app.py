@@ -16,13 +16,13 @@ configure_uploads(app, all)
 class MyForm(FlaskForm):
     all = FileField('all')
 
-@app.route('/', methods=['GET', 'POST'])
-def index():
+@app.route('/', methods=['POST', 'GET'])
+def home():
     form = MyForm()
     if form.validate_on_submit():
-        filename = all.save(form.all.data)
-        return f'Filename: {filename}'
-    return render_template('index.html', form = form)
+        fname = all.save(form.all.data)
+        return f'Name of file: {fname}'
+    return render_template('home.html', form = form)
 
 if __name__==('__main__'):
     app.run(debug=True)
